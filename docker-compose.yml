@@ -3,20 +3,21 @@ volumes:
   db-store:
 services:
   mysql:
+    # 起動するDockerFileを指定
     build: ./mysql
+
+    # ホスト側のポート:コンテナのポート
     ports:
       - '3306:3306'
     volumes:
       - db-store:/var/lib/mysql
     networks:
       - default
-  app:
-    # 起動するイメージを指定
-    build: ./backend
 
-    # 環境変数を設定
-    environment:
-      - DEBUG=app:*
+
+  app:
+    # 起動するDockerFileを指定
+    build: ./backend
 
     tty: true
 
@@ -31,5 +32,6 @@ services:
 
     # 起動後に実行するコマンドを指定
     command: sh -c 'npm i && nodemon'
+
 networks:
   default:
