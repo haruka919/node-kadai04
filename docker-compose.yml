@@ -1,0 +1,35 @@
+version: '3.8'
+volumes:
+  db-store:
+services:
+  mysql:
+    build: ./mysql
+    ports:
+      - '3306:3306'
+    volumes:
+      - db-store:/var/lib/mysql
+    networks:
+      - default
+  app:
+    # 起動するイメージを指定
+    build: ./backend
+
+    # 環境変数を設定
+    environment:
+      - DEBUG=app:*
+
+    tty: true
+
+    # ホスト側のポート:コンテナのポート
+    ports:
+      - '8080:8080'
+    volumes:
+      - ./backend:/app
+
+    # 起動時のカレントフォルダを指定
+    working_dir: /app
+
+    # 起動後に実行するコマンドを指定
+    command: sh -c 'npm i && nodemon'
+networks:
+  default:
