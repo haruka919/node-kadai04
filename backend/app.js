@@ -4,6 +4,7 @@ const app = express();
 const indexRouter = require('./routes/index');
 const loginRouter = require('./routes/login');
 const registerRouter = require('./routes/register');
+const createRouter = require('./routes/create');
 
 // テンプレートエンジンの指定
 app.set('view engine', 'ejs');
@@ -12,6 +13,7 @@ app.set('view engine', 'ejs');
 app.use('/', indexRouter);
 app.use('/login', loginRouter);
 app.use('/register', registerRouter);
+app.use('/create', createRouter);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
