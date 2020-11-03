@@ -66,5 +66,37 @@ module.exports = {
 
       res.redirect('/');
     });
+  },
+
+  // ログイン処理
+  login (req, res) {
+
+    User.query({ where: { email: req.body.email }, andWhere: { password: req.body.password }})
+      .fetch({require: false}) // falseに設定しておくと見つからない場合はnullが返ってくる
+      .then((user) => {
+        if (user == null) {
+          res.redirect('/login');
+        }
+        const payload = {
+          id: user.attributes.id
+        }
+        const token = jwt.sign(payload, config.jwt.secret, config.jwt.options);
+
+        // クッキーに(トークンと名前を)保存
+        res.cookie('token', escape(token), {
+          expires: new Date(Date.now() + 900000),
+          httpOnly: true
+        });
+        res.cookie('name', user.attributes.name, {
+          expires: new Date(Date.now() + 900000),
+          httpOnly: true
+        });
+
+        // みんなの投稿ページにリダイレクト
+        res.redirect('/');
+      })
+      .catch(() => {
+        res.redirect('/login');
+      })
   }
 }
