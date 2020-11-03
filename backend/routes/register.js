@@ -1,10 +1,14 @@
 const express = require('express')
 const router = express.Router()
-const register = require('../controllers/registerController')
+const user= require('../controllers/userController')
 
-router.get('/', register.show);
+// ユーザー登録画面
+router.get('/', user.create);
+
+// 外部ファイル化したバリデーション読み込み
+const RegistValidator = require('../validators/RegistValidator');
 
 // ユーザー登録の送信処理
-router.post('/', register.create);
+router.post('/', RegistValidator, user.store);
 
 module.exports = router
