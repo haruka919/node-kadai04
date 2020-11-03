@@ -9,20 +9,25 @@
         <li class="nav-item">
           <a class="nav-link" href="/create">投稿を作成</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/login">Login</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/register">Register</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            testUser
-          </a>
-          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="/signout">Sign Out</a>
-          </div>
-        </li>
+        <% if (typeof loginUser !== 'undefined') { %>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <%= loginUser %>
+            </a>
+            <form action="/logout" method="post">
+              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                <button type="submit" class="dropdown-item">Sign Out</button>
+              </div>
+            </form>
+          </li>
+        <% } else { %>
+          <li class="nav-item">
+            <a class="nav-link" href="/login">Login</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/register">Register</a>
+          </li>
+        <% } %>
       </ul>
     </div>
   </nav>
