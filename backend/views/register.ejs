@@ -12,6 +12,7 @@
 <body>
   <%- include('components/_header.ejs') %>
   <div class="container">
+    <div><%- content %></div>
     <div class="d-flex justify-content-center">
       <form class="p-3" action="/register" method="post">
         <div class="form-group">
@@ -27,8 +28,8 @@
           <input type="password" class="form-control" id="password" name="password">
         </div>
         <div class="form-group">
-          <label for="password-confirm">password-confirm</label>
-          <input type="password" class="form-control" id="password-confirm" name="password-confirm">
+          <label for="password_confirm">password-confirm</label>
+          <input type="password" class="form-control" id="password_confirm" name="password_confirm">
         </div>
         <button type="submit" class="btn btn-primary btn-block">Register</button>
       </form>
