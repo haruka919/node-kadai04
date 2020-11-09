@@ -9,6 +9,7 @@ const config = require('./config.js');
 
 const indexRouter = require('./routes/index');
 const loginRouter = require('./routes/login');
+const logoutRouter = require('./routes/logout');
 const registerRouter = require('./routes/register');
 const createRouter = require('./routes/create');
 
@@ -62,7 +63,7 @@ const auth = (req, res, next) => {
 
 // routeの設定
 app.use('/login', setUser, loginRouter);
-app.use('/logout', setUser, loginRouter);
+app.use('/logout', setUser, logoutRouter);
 app.use('/register', setUser, registerRouter);
 app.use('/create', setUser, auth,createRouter);
 app.use('/', setUser, auth, indexRouter);

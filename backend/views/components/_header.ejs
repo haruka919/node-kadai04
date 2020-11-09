@@ -14,9 +14,11 @@
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <%= loginUser %>
             </a>
-            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-              <button type="button" class="dropdown-item" id="logout-button">Sign Out</button>
-            </div>
+            <form action="/logout" method="post">
+              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                <button type="submit" class="dropdown-item">Sign Out</button>
+              </div>
+            </form>
           </li>
         <% } else { %>
           <li class="nav-item">
@@ -30,4 +32,3 @@
     </div>
   </nav>
 </header>
-<script src="/js/main.js"></script>
