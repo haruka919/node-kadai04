@@ -99,9 +99,7 @@ module.exports = {
     User.query({ where: { email: req.body.email }, andWhere: { password: req.body.password }})
       .fetch({require: false}) // falseに設定しておくと見つからない場合はnullが返ってくる
       .then((user) => {
-        if (user == null) {
-          res.redirect('/login');
-        }
+        if (!user) res.redirect('/login');
         const payload = {
           id: user.attributes.id
         }
