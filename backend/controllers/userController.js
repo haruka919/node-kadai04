@@ -47,7 +47,7 @@ module.exports = {
     // バリデーション失敗
     if (!errors.isEmpty()) {
       let content = '<ul class="error">'
-      const result_arr = errors.array() // エラー内容が配列に返る
+      const result_arr = errors.array()
       for (let n in result_arr) {
         content += '<li>' + result_arr[n].msg + '</li>'
       }
@@ -55,7 +55,7 @@ module.exports = {
       const data = {
         title: '会員登録',
         content: content,
-        form: req.body, // nameとemailは入力したものを返す
+        form: req.body,
       }
       res.render('register', data)
     } else {
@@ -70,10 +70,9 @@ module.exports = {
             id: user.attributes.id,
           }
 
-          // JWT発行
           const token = jwt.sign(payload, config.jwt.secret, config.jwt.options)
 
-          // クッキーに(トークンと名前を)保存
+          // クッキーに(トークンと名前)を保存
           res.cookie('token', escape(token), {
             expires: new Date(Date.now() + 900000),
             httpOnly: true,
@@ -97,12 +96,13 @@ module.exports = {
       .fetch({ require: false }) // falseに設定しておくと見つからない場合はnullが返ってくる
       .then((user) => {
         if (!user) res.redirect('/login')
+
         const payload = {
           id: user.attributes.id,
         }
         const token = jwt.sign(payload, config.jwt.secret, config.jwt.options)
 
-        // クッキーに(トークンと名前を)保存
+        // クッキーに(トークンと名前)を保存
         res.cookie('token', escape(token), {
           expires: new Date(Date.now() + 900000),
           httpOnly: true,
