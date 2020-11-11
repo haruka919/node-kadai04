@@ -65,9 +65,10 @@ module.exports = {
         password: req.body.password,
       })
         .save()
-        .then((user) => {
+        .then((userModel) => {
+          const user = userModel.toJSON()
           const payload = {
-            id: user.attributes.id,
+            id: user.id,
           }
 
           const token = jwt.sign(payload, config.jwt.secret, config.jwt.options)
@@ -77,7 +78,7 @@ module.exports = {
             expires: new Date(Date.now() + 900000),
             httpOnly: true,
           })
-          res.cookie('name', user.attributes.name, {
+          res.cookie('name', user.name, {
             expires: new Date(Date.now() + 900000),
             httpOnly: true,
           })
@@ -94,11 +95,13 @@ module.exports = {
   login(req, res) {
     User.query({ where: { email: req.body.email }, andWhere: { password: req.body.password } })
       .fetch({ require: false }) // falseに設定しておくと見つからない場合はnullが返ってくる
-      .then((user) => {
-        if (!user) res.redirect('/login')
+      .then((userModel) => {
+        if (!userModel) res.redirect('/login')
+
+        const user = userModel.toJSON()
 
         const payload = {
-          id: user.attributes.id,
+          id: user.id,
         }
         const token = jwt.sign(payload, config.jwt.secret, config.jwt.options)
 
@@ -107,7 +110,7 @@ module.exports = {
           expires: new Date(Date.now() + 900000),
           httpOnly: true,
         })
-        res.cookie('name', user.attributes.name, {
+        res.cookie('name', user.name, {
           expires: new Date(Date.now() + 900000),
           httpOnly: true,
         })
