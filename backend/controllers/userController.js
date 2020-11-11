@@ -3,15 +3,18 @@ const jwt = require('jsonwebtoken');
 const config = require('./../config.js');
 const { validationResult } = require('express-validator/check');
 
+require('dotenv').config()
+const env = process.env
+
 const knex = require('knex')({
-  client: 'mysql',       // 使用するデータベースを指定
+  client: env.DB_CONNECTION,
   connection: {
-    host: 'mysql',
-    user: 'root',
-    password: 'secret',
-    database: 'express',
-    charset: 'utf8',
-    port: 3306
+    host: env.DB_HOST,
+    port: env.DB_PORT,
+    database: env.DB_DATABASE,
+    user: env.DB_USERNAME,
+    password: env.DB_PASSWORD,
+    charset: 'utf8'
   },
 });
 
