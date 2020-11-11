@@ -1,3 +1,6 @@
+require('dotenv').config()
+const env = process.env
+
 module.exports = {
   development: {
     client: env.DB_CONNECTION,
