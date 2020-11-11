@@ -43,15 +43,10 @@ const auth = (req, res, next) => {
     }
   }
 
-  if (!token) {
-    // トークンがない場合はログインページにリダイレクト
-    res.redirect('/login')
-  }
-
   // トークンの検証
   jwt.verify(token, config.jwt.secret, (err, decoded) => {
-    if (err) {
-      // 認証NGの場合はログインページにリダイレクト
+    if (!token || err) {
+      // トークンが無い、または認証NGの場合はログインページにリダイレクト
       res.redirect('/login')
     } else {
       // 認証OKの場合
