@@ -7,14 +7,14 @@ module.exports = {
       database: env.DB_DATABASE,
       user: env.DB_USERNAME,
       password: env.DB_PASSWORD,
-      charset: 'utf8'
+      charset: 'utf8',
     },
     seeds: {
-      directory: './db/seeds/dev'
+      directory: './db/seeds/dev',
     },
     migrations: {
-      directory:'./db/migrations',
-      tableName: 'knex_migrations'
-    }
-  }
-};
+      directory: './db/migrations',
+      tableName: 'knex_migrations',
+    },
+  },
+}

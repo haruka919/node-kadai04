@@ -6,6 +6,6 @@ router.get('/', function (req, res) {
   res.render('./login.ejs')
 })
 // ユーザー登録の送信処理
-router.post('/', user.login);
+router.post('/', user.login)
 
 module.exports = router
