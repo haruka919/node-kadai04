@@ -2,9 +2,10 @@ const mysql = require('mysql')
 const jwt = require('jsonwebtoken')
 const config = require('./../config.js')
 const { validationResult } = require('express-validator/check')
-
 require('dotenv').config()
 const env = process.env
+const bcrypt = require('bcryptjs')
+const salt = bcrypt.genSaltSync(10)
 
 const knex = require('knex')({
   client: env.DB_CONNECTION,
@@ -62,7 +63,7 @@ module.exports = {
       new User({
         name: req.body.name,
         email: req.body.email,
-        password: req.body.password,
+        password: bcrypt.hashSync(req.body.password, salt),
       })
         .save()
         .then((userModel) => {
@@ -93,12 +94,16 @@ module.exports = {
 
   // ログイン処理
   login(req, res) {
-    User.query({ where: { email: req.body.email }, andWhere: { password: req.body.password } })
+    User.query({ where: { email: req.body.email } })
       .fetch({ require: false }) // falseに設定しておくと見つからない場合はnullが返ってくる
       .then((userModel) => {
         if (!userModel) res.redirect('/login')
 
         const user = userModel.toJSON()
+
+        if (!bcrypt.compare(req.body.password, user.password)) {
+          res.redirect('/login')
+        }
 
         const payload = {
           id: user.id,
