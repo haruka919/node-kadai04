@@ -93,16 +93,18 @@ module.exports = {
   },
 
   // ログイン処理
-  login(req, res) {
+  login(req, res, next) {
     User.query({ where: { email: req.body.email } })
       .fetch({ require: false }) // falseに設定しておくと見つからない場合はnullが返ってくる
-      .then((userModel) => {
-        if (!userModel) res.redirect('/login')
+      .then(async (userModel) => {
+        const user = userModel ? userModel.toJSON() : userModel
+        if (!user) {
+          throw new Error('mailまたはパスワードが正しくありません')
+        }
 
-        const user = userModel.toJSON()
-
-        if (!bcrypt.compare(req.body.password, user.password)) {
-          res.redirect('/login')
+        const result = await bcrypt.compare(req.body.password, user.password)
+        if (!result) {
+          throw new Error('mailまたはパスワードが正しくありません')
         }
 
         const payload = {
@@ -123,8 +125,8 @@ module.exports = {
         // みんなの投稿ページにリダイレクト
         res.redirect('/')
       })
-      .catch(() => {
-        res.redirect('/login')
+      .catch((err) => {
+        next(err)
       })
   },
 }
