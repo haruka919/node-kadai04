@@ -98,12 +98,8 @@ module.exports = {
       .fetch({ require: false }) // falseに設定しておくと見つからない場合はnullが返ってくる
       .then(async (userModel) => {
         const user = userModel ? userModel.toJSON() : userModel
-        if (!user) {
-          throw new Error('mailまたはパスワードが正しくありません')
-        }
 
-        const result = await bcrypt.compare(req.body.password, user.password)
-        if (!result) {
+        if (!user || !(await bcrypt.compare(req.body.password, user.password))) {
           throw new Error('mailまたはパスワードが正しくありません')
         }
 
