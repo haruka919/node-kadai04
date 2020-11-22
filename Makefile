@@ -16,9 +16,7 @@ destroy-volumes:
 ps:
 	docker-compose ps
 logs:
-	docker-compose logs
-logs-watch:
-	docker-compose logs --follow
+	docker-compose logs -f --tail=500
 app:
 	docker-compose exec app bash
 sql:

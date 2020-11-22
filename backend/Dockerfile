@@ -13,10 +13,11 @@ WORKDIR /app
 # ワイルドカードを使用して、package.json と package-lock.json の両方が確実にコピーされるようにする。
 COPY package*.json ./
 
+# アプリケーションのソースをバンドルする
+COPY . /app
+
 RUN npm install
 
-# アプリケーションのソースをバンドルする
-COPY . .
-
 EXPOSE 8080
-CMD [ "node" ]
+
+CMD ["npm", "start"]

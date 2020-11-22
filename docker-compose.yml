@@ -19,6 +19,10 @@ services:
     # 起動するDockerFileを指定
     build: ./backend
 
+    # 環境変数を設定
+    environment:
+      - DEBUG=app:*
+
     tty: true
 
     # ホスト側のポート:コンテナのポート
@@ -31,7 +35,7 @@ services:
     working_dir: /app
 
     # 起動後に実行するコマンドを指定
-    command: sh -c 'npm i && nodemon'
+    command: npm start
 
 networks:
   default:
