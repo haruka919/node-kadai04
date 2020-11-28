@@ -1,11 +1,12 @@
+require('dotenv').config()
 const express = require('express')
 const app = express()
 
 const cookieParser = require('cookie-parser')
-
 const bodyParser = require('body-parser')
 const jwt = require('jsonwebtoken')
-const config = require('./config.js')
+const env = process.env.NODE_ENV || 'development'
+const config = require(__dirname + '/config/config.json')[env]
 
 const indexRouter = require('./routes/index')
 const loginRouter = require('./routes/login')
@@ -34,6 +35,7 @@ const auth = (req, res, next) => {
   const key = 'token'
   let token = ''
   const cookie_data = req.headers.cookie != undefined ? req.headers.cookie : ''
+
   const data = cookie_data.split(';')
   for (let i in data) {
     if (data[i].trim().startsWith(key + '=')) {
@@ -63,19 +65,19 @@ app.use('/create', setUser, auth, createRouter)
 app.use('/', setUser, auth, indexRouter)
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  res.locals.message = err.message
+  res.locals.error = req.app.get('env') === 'development' ? err : {}
 
   // render the error page
-  res.status(err.status || 500);
-  res.render('error');
-});
+  res.status(err.status || 500)
+  res.send(err.message)
+})
 
 const PORT = process.env.PORT || 8080
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`)
 })
 
-module.exports = app;
+module.exports = app
