@@ -30,28 +30,19 @@ module.exports = {
       .then((user) => {
         const payload = {
           id: user.id,
+          name: user.name
         }
         const token = jwt.sign(payload, config.jwt.secret, config.jwt.options)
 
-        // クッキーに(トークンと名前)を保存
+        // クッキーに(トークン)を保存
         res.cookie('token', escape(token), {
-          expires: new Date(Date.now() + 900000),
-          httpOnly: true,
-        })
-        res.cookie('name', user.name, {
           expires: new Date(Date.now() + 900000),
           httpOnly: true,
         })
         res.redirect('/')
       })
       .catch((err) => {
-        console.log(err)
-        const data = {
-          title: '会員登録',
-          form: form,
-          err: err,
-        }
-        res.render('./register.ejs', data)
+        next(err)
       })
   },
 
@@ -68,14 +59,11 @@ module.exports = {
         }
         const payload = {
           id: user.id,
+          name: user.name
         }
         const token = jwt.sign(payload, config.jwt.secret, config.jwt.options)
         // クッキーに(トークンと名前)を保存
         res.cookie('token', escape(token), {
-          expires: new Date(Date.now() + 900000),
-          httpOnly: true,
-        })
-        res.cookie('name', user.name, {
           expires: new Date(Date.now() + 900000),
           httpOnly: true,
         })

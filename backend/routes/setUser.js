@@ -1,7 +1,7 @@
 const setUser = (req, res, next) => {
-  if (req.cookies.name) {
+  if (req.decoded) {
     // ローカル変数にユーザー名を保存
-    res.locals.loginUser = req.cookies.name
+    res.locals.loginUser = req.decoded.name
   } else {
     res.locals.loginUser = null
   }
