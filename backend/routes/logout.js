@@ -3,7 +3,7 @@ const router = express.Router()
 
 router.post('/', function (req, res) {
   res.clearCookie('token')
-  res.clearCookie('name')
+  req.decoded = null
   res.redirect('/login')
 })
 

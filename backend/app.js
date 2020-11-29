@@ -8,11 +8,10 @@ const jwt = require('jsonwebtoken')
 const env = process.env.NODE_ENV || 'development'
 const config = require(__dirname + '/config/config.json')[env]
 
-const indexRouter = require('./routes/index')
 const loginRouter = require('./routes/login')
 const logoutRouter = require('./routes/logout')
 const registerRouter = require('./routes/register')
-const createRouter = require('./routes/create')
+const articleRouter = require('./routes/article')
 
 // テンプレートエンジンの指定
 app.set('view engine', 'ejs')
@@ -61,8 +60,7 @@ const auth = (req, res, next) => {
 app.use('/login', setUser, loginRouter)
 app.use('/logout', setUser, logoutRouter)
 app.use('/register', setUser, registerRouter)
-app.use('/create', setUser, auth, createRouter)
-app.use('/', setUser, auth, indexRouter)
+app.use('/', auth, setUser, articleRouter)
 
 // error handler
 app.use(function (err, req, res, next) {
