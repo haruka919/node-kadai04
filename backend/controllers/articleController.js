@@ -43,7 +43,6 @@ module.exports = {
   edit(req, res) {
     db.Article.findByPk(req.params.id)
     .then(article => {
-      console.log(article)
       res.render('./edit.ejs', { article })
     })
   },
