@@ -11,11 +11,8 @@ module.exports = {
           required: true,
         },
       ],
-    }).then((article) => {
-      const data = {
-        articles: article,
-      }
-      res.render('./index.ejs', data)
+    }).then((articles) => {
+      res.render('./index.ejs', { articles })
     })
   },
 
@@ -47,10 +44,7 @@ module.exports = {
     db.Article.findByPk(req.params.id)
     .then(article => {
       console.log(article)
-      const data = {
-        article: article
-      }
-      res.render('./edit.ejs', data)
+      res.render('./edit.ejs', { article })
     })
   },
 
