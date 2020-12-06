@@ -20,20 +20,16 @@ module.exports = {
         },
       ],
     }).then(async articles => {
-      console.log('favorites')
-      console.log(articles.length)
       const myFavorites = await db.Favorite.findAll({
         attributes: ['articleId'],
         where: {
           userId: req.decoded.id
         }
       })
-      console.log(myFavorites)
       let myFavoriteIds = []
       if (myFavorites) {
         myFavoriteIds = myFavorites.map(favorite => favorite.articleId)
       }
-      console.log(myFavoriteIds)
       const data = {
         articles,
         myFavoriteIds
@@ -90,6 +86,19 @@ module.exports = {
       .catch((err) => {
         next(err)
       })
+  },
+
+  // 記事削除処理
+  delete(req, res, next) {
+    db.Article.destroy({
+      where: {id: req.params.id}
+    })
+    .then(() => {
+      res.redirect('/')
+    })
+    .catch((err) => {
+      next(err)
+    })
   },
 
   // いいね処理

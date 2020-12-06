@@ -17,6 +17,9 @@ router.get('/article/edit/:id', article.edit)
 // 記事更新処理
 router.post('/article/update/:id', article.update)
 
+// 記事削除処理
+router.post('/article/delete/:id', article.delete)
+
 // いいね
 router.post('/article/like', article.like)
 
