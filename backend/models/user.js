@@ -53,8 +53,8 @@ module.exports = (sequelize, DataTypes) => {
     return bcrypt.compareSync(password, this.password)
   }
   User.associate = function (models) {
-    User.hasMany(models.Article)
-    User.belongsToMany(models.Article, { through: 'Favorite', foreignKey: 'userId'})
+    User.hasMany(models.Article, {foreignKey: 'userId'})
+    User.hasMany(models.Favorite, {foreignKey: 'userId'})
   }
   return User
 }
