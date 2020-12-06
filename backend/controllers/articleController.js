@@ -9,10 +9,32 @@ module.exports = {
         {
           model: db.User,
           required: true,
+          include: [
+            {
+              model: db.Favorite,
+            }
+          ]
+        },
+        {
+          model: db.Favorite,
         },
       ],
-    }).then((articles) => {
-      res.render('./index.ejs', { articles })
+    }).then(async articles => {
+      const myFavorites = await db.Favorite.findAll({
+        attributes: ['articleId'],
+        where: {
+          userId: req.decoded.id
+        }
+      })
+      let myFavoriteIds = []
+      if (myFavorites) {
+        myFavoriteIds = myFavorites.map(favorite => favorite.articleId)
+      }
+      const data = {
+        articles,
+        myFavoriteIds
+      }
+      res.render('./index.ejs', data)
     })
   },
 
@@ -65,4 +87,42 @@ module.exports = {
         next(err)
       })
   },
+
+  // 記事削除処理
+  delete(req, res, next) {
+    db.Article.destroy({
+      where: {id: req.params.id}
+    })
+    .then(() => {
+      res.redirect('/')
+    })
+    .catch((err) => {
+      next(err)
+    })
+  },
+
+  // いいね処理
+  async like(req, res, next) {
+    const data = {
+      articleId: req.body.articleId,
+      userId: req.decoded.id
+    }
+    try {
+      const favorite = await db.Favorite.findOne({
+        where: data
+      })
+      // 既にお気に入りデータがあれば削除、なければ追加
+      favorite ? await favorite.destroy() : await db.Favorite.create(data)
+
+      // お気に入りの総数を返す
+      const count = await db.Favorite.count({
+        where: {
+          articleId: req.body.articleId
+        }
+      })
+      res.json(count)
+    } catch (err) {
+      next(err)
+    }
+  }
 }
