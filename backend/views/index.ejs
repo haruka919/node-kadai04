@@ -10,11 +10,7 @@
       integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
       crossorigin="anonymous"
     />
-    <script
-      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-      crossorigin="anonymous"
-    ></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
       integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
@@ -36,15 +32,40 @@
           <h5 class="card-title"><%= article['title'] %></h5>
           <h6 class="card-subtitle mb-2 text-muted"><%= article['content'] %></h6>
           <p class="card-text">投稿者：<%= article['User']['name'] %></p>
-          <p class="card-text"><i class="far fa-heart"></i><span class="ml-1">0</span></p>
-
+          <p class="card-text">
+            <p><%=article['id']%></p>
+            <span class="favorite" data-article-id="<%=article['id']%>">
+              <span class="icon-heart <%= myFavoriteIds.includes(article['id']) ? 'is-liked' : '' %>">
+                <svg version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" style="width: 20px; height: 20px;" xml:space="preserve">
+                <g>
+                  <path class="st0" d="M380.63,32.196C302.639,33.698,264.47,88.893,256,139.075c-8.47-50.182-46.638-105.378-124.63-106.879
+                    C59.462,30.814,0,86.128,0,187.076c0,129.588,146.582,189.45,246.817,286.25c3.489,3.371,2.668,3.284,2.668,3.284
+                    c1.647,2.031,4.014,3.208,6.504,3.208v0.011c0,0,0.006,0,0.011,0c0,0,0.006,0,0.011,0v-0.011c2.489,0,4.856-1.177,6.503-3.208
+                    c0,0-0.821,0.086,2.669-3.284C365.418,376.526,512,316.664,512,187.076C512,86.128,452.538,30.814,380.63,32.196z"></path>
+                </g>
+                </svg>
+              </span>
+              <span class="ml-1 favorite-count"><%= article['Favorites'].length %></span>
+            </span>
+          </p>
           <% if (loginUser === article['User']['name']) { %>
-          <a href="/article/edit/<%=article['id']%>" class="text-light btn btn-info rounded-pill">編集</a>
-          <a class="text-danger btn btn-outline-danger rounded-pill">削除</a>
+            <a href="/article/edit/<%=article['id']%>" class="text-light btn btn-info rounded-pill">編集</a>
+            <a class="text-danger btn btn-outline-danger rounded-pill">削除</a>
           <% } %>
         </div>
       </div>
       <% }) %>
     </div>
+    <script src="js/main.js"></script>
+    <style>
+      .icon-heart{
+        cursor: pointer;
+        opacity: 0.2;
+      }
+      .icon-heart.is-liked {
+        fill: pink;
+        opacity: 1;
+      }
+    </style>
   </body>
 </html>

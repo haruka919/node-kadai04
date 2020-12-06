@@ -17,4 +17,7 @@ router.get('/article/edit/:id', article.edit)
 // 記事更新処理
 router.post('/article/update/:id', article.update)
 
+// いいね
+router.post('/article/like', article.like)
+
 module.exports = router
